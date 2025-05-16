@@ -14,11 +14,17 @@
             <h1>AimClick</h1>
         </div>
         <div class="header">
-            <div class="score">
-                <button>Start</button>
-                <button>Stop</button>
-                <p>Score: 0</p>
-                <p>Time: 1:00</p>
+            <div class="scoreBoard">
+                <button id="start">Start</button>
+                <button id="stop">Stop</button>
+                <div class="variableDisplay">
+                    <p><u>Score</u></p>
+                    <p id="totalPoints">0</p>
+                </div>
+                <div class="variableDisplay">
+                    <p><u>Time</u></p>
+                    <p id="time">60</p>
+                </div>
             </div>
             <div class="recordDisplay">
                 <ol id="recordList">
