@@ -11,11 +11,28 @@ function createTarget() {
     target.style.top = (Math.random() * (90)) + '%';
     target.style.left = (Math.random() * (90)) + '%';
 
-    playboard.appendChild(target);
+    return target;
 }
 
 let startButton = document.querySelector("#start");
+let stopButton = document.querySelector("#stop");
+let gameStatus = false;
 
 startButton.addEventListener("click", () => {
-    createTarget();
+    gameStatus = true;
+    playboard.appendChild(createTarget());
 })
+
+stopButton.addEventListener("click", () => {
+    gameStatus = false;
+    playboard.removeChild(playboard.lastElementChild);
+})
+
+playboard.addEventListener("click", (e) => {
+    if (e.target.classList.contains("target")) {
+        playboard.removeChild(e.target);
+        playboard.appendChild(createTarget());
+    }
+})
+
+
