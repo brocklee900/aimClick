@@ -18,14 +18,39 @@ let startButton = document.querySelector("#start");
 let stopButton = document.querySelector("#stop");
 let gameStatus = false;
 
+const TIMELIMIT = 30;
+let timeDisplay = document.querySelector("#time");
+let intervalId;
+
+function startTimer() {
+    let count = TIMELIMIT;
+    timeDisplay.textContent = count
+    intervalId = setInterval( () => {
+        count -= 1;
+        timeDisplay.textContent = count;
+        
+        if (count == 0) {
+            gameStatus = false;
+            clearInterval(intervalId);
+            playboard.removeChild(playboard.lastElementChild);
+        }
+    }, 1000);
+}
+
 startButton.addEventListener("click", () => {
-    gameStatus = true;
-    playboard.appendChild(createTarget());
+    if (!gameStatus) {
+        gameStatus = true;
+        startTimer();
+        playboard.appendChild(createTarget());
+    }
 })
 
 stopButton.addEventListener("click", () => {
-    gameStatus = false;
-    playboard.removeChild(playboard.lastElementChild);
+    if (gameStatus) {
+        gameStatus = false;
+        clearInterval(intervalId);
+        playboard.removeChild(playboard.lastElementChild);
+    }
 })
 
 playboard.addEventListener("click", (e) => {
