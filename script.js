@@ -14,9 +14,20 @@ function createTarget() {
     return target;
 }
 
-let startButton = document.querySelector("#start");
-let stopButton = document.querySelector("#stop");
-let gameStatus = false;
+let scoreDisplay = document.querySelector("#score");
+let score = 0;
+let combo = 1;
+function updateScore(targetHit) {
+    if (targetHit) {
+        score += combo;
+        if (combo < 5) {
+            combo += 1;
+        }
+        scoreDisplay.textContent = score;
+    } else {
+        combo = 1;
+    }
+}
 
 const TIMELIMIT = 30;
 let timeDisplay = document.querySelector("#time");
@@ -37,10 +48,17 @@ function startTimer() {
     }, 1000);
 }
 
+let startButton = document.querySelector("#start");
+let stopButton = document.querySelector("#stop");
+let gameStatus = false;
+
 startButton.addEventListener("click", () => {
     if (!gameStatus) {
         gameStatus = true;
         startTimer();
+        scoreDisplay.textContent = 0;
+        score = 0;
+        combo = 1;
         playboard.appendChild(createTarget());
     }
 })
@@ -54,9 +72,13 @@ stopButton.addEventListener("click", () => {
 })
 
 playboard.addEventListener("click", (e) => {
+
     if (e.target.classList.contains("target")) {
+        updateScore(true, scoreDisplay);
         playboard.removeChild(e.target);
         playboard.appendChild(createTarget());
+    } else {
+        updateScore(false, scoreDisplay);
     }
 })
 
