@@ -1,54 +1,54 @@
 
+/* edit defaults for all objects */
 * {
     box-sizing: border-box;
     margin: 0px;
     padding: 0px;
 }
 
-h1 {
-    color: red;
-}
-
 body {
     --border: 5px solid black;
+    --font-size: clamp(1.25rem, 3vh, 3rem);
+    --gap: 10px;
 
     display: flex;
     flex-direction: column;
 
     padding: 20px;
-    gap: 10px;
+    gap: var(--gap);
     height: 100vh;
     width: 100vw;
 }
 
-button {
-    flex:1;
-    font-size: inherit;
-}
-
+/* ---------- title ---------- */
 .title {
     text-align: center;
 }
 
+.title > h1 {
+    color: red;
+}
+
+
+/* --------- header --------- */
 .header {
     display: flex;
-    gap: 10px;
-
-    font-size: clamp(1.25rem, 3vh, 3rem);
+    gap: var(--gap);
+    font-size: var(--font-size);
 }
 
 .scoreBoard {
     display: flex;
     flex: 1;
-
     border: var(--border);
 }
 
-#time {
-    color: red;
+.header > .scoreBoard > button {
+    flex:1;
+    font-size: var(--font-size);
 }
 
-.variableDisplay {
+.header > .scoreBoard > .variableDisplay {
     display: flex;
     flex: 1;
     flex-direction: column;
@@ -57,7 +57,11 @@ button {
     text-align: center;
 }
 
-.recordDisplay {
+#time {
+    color: red;
+}
+
+.header > .recordDisplay {
     border: var(--border);
 }
 
@@ -67,11 +71,12 @@ button {
     padding-right: 10px;
 }
 
+
+/* ------------ playboard ------------ */
 .playBoard {
     display: flex;
     flex: 1;
     position: relative;
-
     border: var(--border);
 }
 
@@ -82,6 +87,6 @@ button {
 
 .point {
     position: absolute;
-    font-size: clamp(1.25rem, 3vh, 3rem);
     text-align: center;
+    font-size: var(--font-size);
 }
