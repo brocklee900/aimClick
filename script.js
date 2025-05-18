@@ -31,21 +31,40 @@ function updateScore(targetHit) {
 
 const TIMELIMIT = 30;
 let timeDisplay = document.querySelector("#time");
-let intervalId;
+let targetIntervalId;
 
 function startTimer() {
     let count = TIMELIMIT;
-    timeDisplay.textContent = count
-    intervalId = setInterval( () => {
+    timeDisplay.textContent = count;
+    targetIntervalId = setInterval( () => {
         count -= 1;
         timeDisplay.textContent = count;
         
         if (count == 0) {
             gameStatus = false;
-            clearInterval(intervalId);
+            clearInterval(targetIntervalId);
             playboard.removeChild(playboard.lastElementChild);
         }
     }, 1000);
+}
+
+
+//Shows the amount of points gained from clicking on the target
+let pointIntervalId;
+function showPoint(target) {
+    //Switch the class instead of making a new object (to preserve the position on the board)
+    target.classList.remove("target");
+    target.classList.add("point");
+
+    target.textContent = "+" + combo;
+    target.style.opacity = 1;
+
+    pointIntervalId = setInterval( () => {
+        target.style.opacity = +target.style.opacity - .1;
+        if (target.style.opacity == 0) {
+            playboard.removeChild(target);
+        }
+    }, 100)
 }
 
 let startButton = document.querySelector("#start");
@@ -66,16 +85,19 @@ startButton.addEventListener("click", () => {
 stopButton.addEventListener("click", () => {
     if (gameStatus) {
         gameStatus = false;
-        clearInterval(intervalId);
-        playboard.removeChild(playboard.lastElementChild);
+        clearInterval(targetIntervalId);
+        while(playboard.lastElementChild) {
+            playboard.removeChild(playboard.lastElementChild);
+        }
     }
 })
 
 playboard.addEventListener("click", (e) => {
 
     if (e.target.classList.contains("target")) {
-        updateScore(true, scoreDisplay);
-        playboard.removeChild(e.target);
+        showPoint(e.target);
+        updateScore(true);
+        //playboard.removeChild(e.target);
         playboard.appendChild(createTarget());
     } else {
         updateScore(false, scoreDisplay);

@@ -79,3 +79,9 @@ button {
     background-color: red;
     position: absolute;
 }
+
+.point {
+    position: absolute;
+    font-size: clamp(1.25rem, 3vh, 3rem);
+    text-align: center;
+}
