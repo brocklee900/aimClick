@@ -6,11 +6,32 @@ let stopButton = document.querySelector("#stop");
 let scoreDisplay = document.querySelector("#score");
 
 let gameStatus = false;
+let counting = false;
 let score = 0;
 let combo = 1;
 
 const TARGETSCALE = .1
 const TIMELIMIT = 30;
+
+//Initialize variables and begin the game
+function startGame() {
+    gameStatus = true;
+    startTimer();
+    scoreDisplay.textContent = 0;
+    score = 0;
+    combo = 1;
+    playboard.classList.remove("playBoardCover");
+    createTarget();
+}
+
+//Remove targets and stop game
+function stopGame() {
+    gameStatus = false;
+
+    //only grab the target to remove - the point elements will delete itself
+    playboard.removeChild(playboard.querySelector(".target"));
+    playboard.classList.add("playBoardCover");
+}
 
 //create and return the target that the player must click within the play area
 //***since playboard position is relative and target position is absolute,
@@ -56,10 +77,8 @@ function startTimer() {
         if (gameStatus == false) {
             clearInterval(targetIntervalId);
         } else if (count == 0) {
-            gameStatus = false;
             clearInterval(targetIntervalId);
-            //only grab the target to remove - the point elements will delete itself
-            playboard.removeChild(playboard.querySelector(".target"));
+            stopGame();
         }
     }, 1000);
 }
@@ -82,25 +101,35 @@ function showPoint(target) {
     }, 100);
 }
 
-//Set the initial starting values and start the game
+//Countdown, then start the game and initialize variables
+function countDown() {
+    let timerCountDown = document.createElement("p");
+    timerCountDown.classList.add("countDown");
+    playboard.appendChild(timerCountDown);
+    timerCountDown.textContent = 3;
+
+    setInterval( () => {
+        timerCountDown.textContent = +timerCountDown.textContent - 1;
+        if (timerCountDown.textContent == '0') {
+            playboard.removeChild(timerCountDown);
+            counting = false;
+            startGame();
+        };
+    }, 1000);
+}
+
+//Button to start countdown to start game
 startButton.addEventListener("click", () => {
-    if (!gameStatus) {
-        gameStatus = true;
-        startTimer();
-        scoreDisplay.textContent = 0;
-        score = 0;
-        combo = 1;
-        createTarget();
+    if (!gameStatus && !counting) {
+        counting = true;
+        countDown();
     }
 })
 
-//Stop the game
+//Button to stop game
 stopButton.addEventListener("click", () => {
     if (gameStatus) {
-        gameStatus = false;
-
-        //only grab the target to remove - the point elements will delete itself
-        playboard.removeChild(playboard.querySelector(".target"));
+        stopGame();
     }
 })
 

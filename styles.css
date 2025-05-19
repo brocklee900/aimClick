@@ -75,9 +75,19 @@ body {
 /* ------------ playboard ------------ */
 .playBoard {
     display: flex;
+    justify-content: center;
     flex: 1;
     position: relative;
     border: var(--border);
+}
+
+.playBoardCover {
+    box-shadow: 0 0 0 100vh rgb(150, 150, 150) inset;
+}
+
+.playBoard > .countDown {
+    font-size: var(--font-size);
+    align-self: center;
 }
 
 .target {
